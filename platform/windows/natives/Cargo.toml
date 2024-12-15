@@ -1,0 +1,17 @@
+[package]
+name = "josdirs-natives-windows"
+version = "0.1.0"
+edition = "2021"
+authors = ["WasabiThumb"]
+
+[lib]
+crate_type = ["cdylib"]
+
+[profile.release]
+opt-level = "z"
+codegen-units = 1
+panic = "abort"
+
+[dependencies]
+jni = "0.21.1"
+windows-sys = "0.58"
