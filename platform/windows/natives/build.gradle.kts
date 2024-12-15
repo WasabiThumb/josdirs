@@ -10,16 +10,18 @@ rust {
     cargoInstallTargets.set(true)
     targets {
         create("windows-x86_64") {
-            target = "x86_64-pc-windows-msvc"
+            target = "x86_64-pc-windows-gnu"
             outputName = libName
         }
         create("windows-i686") {
-            target = "i686-pc-windows-msvc"
+            target = "i686-pc-windows-gnu"
             outputName = libName
         }
+        /*
         create("windows-aarch64") {
-            target = "aarch64-pc-windows-msvc"
+            target = "aarch64-pc-windows-gnu"
             outputName = libName
         }
+        */
     }
 }

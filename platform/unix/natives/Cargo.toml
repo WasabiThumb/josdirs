@@ -5,7 +5,7 @@ edition = "2021"
 authors = ["WasabiThumb"]
 
 [lib]
-crate_type = ["cdylib"]
+crate-type = ["cdylib"]
 
 [profile.release]
 opt-level = "z"

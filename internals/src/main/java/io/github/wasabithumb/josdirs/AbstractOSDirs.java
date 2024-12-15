@@ -5,6 +5,7 @@ import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Method;
+import java.nio.CharBuffer;
 import java.util.*;
 import java.util.logging.Logger;
 
@@ -27,50 +28,70 @@ public abstract class AbstractOSDirs implements OSDirs {
 
     private @NotNull String toString0() throws ReflectiveOperationException, SecurityException {
         final Method[] methods = OSDirs.class.getDeclaredMethods();
+        final int max = methods.length;
 
-        List<String> keys = new ArrayList<>(methods.length);
-        List<String> values = new ArrayList<>(methods.length);
+        final String[] keys = new String[max];
+        final String[] values = new String[max];
         int maxKeyLen = 0;
+        int totalValueLen = 0;
         int count = 0;
 
         String key;
+        OSPath tmp;
         String value;
+        String value2;
         for (Method m : methods) {
             if (m.getParameterCount() != 0) continue;
             if (!OSPath.class.isAssignableFrom(m.getReturnType())) continue;
 
             key = m.getName();
-            value = ((OSPath) m.invoke(this)).toString();
+            tmp = (OSPath) m.invoke(this);
+
+            if (tmp == null) {
+                value = "null";
+            } else {
+                value = tmp.roaming(false).toString();
+                value2 = tmp.roaming(true).toString();
+                if (!value2.equals(value)) {
+                    value += " OR " + value2;
+                }
+            }
 
             maxKeyLen = Math.max(maxKeyLen, key.length());
-            keys.add(key);
-            values.add(value);
+            totalValueLen += value.length();
+
+            keys[count] = key;
+            values[count] = value;
             count++;
         }
 
-        char[] pad = new char[maxKeyLen + 1];
-        Arrays.fill(pad, ' ');
+        final Integer[] indices = new Integer[count];
+        for (int i=0; i < count; i++) indices[i] = i;
+        Arrays.sort(indices, Comparator.comparing((Integer i) -> keys[i]));
 
-        Iterator<String> iKeys = keys.iterator();
-        Iterator<String> iValues = values.iterator();
-        StringBuilder ret = new StringBuilder();
-        ret.append("OSDirs {\n");
+        final CharBuffer ret = CharBuffer.allocate(10 + (maxKeyLen + 5) * count + totalValueLen);
+        ret.put("OSDirs {\n");
 
-        for (int i=0; i < count; i++) {
-            key = iKeys.next();
-            value = iValues.next();
+        for (Integer index : indices) {
+            key = keys[index];
+            value = values[index];
 
-            ret.append('\t')
-                    .append(key)
-                    .append(pad, 0, pad.length - key.length())
-                    .append('=')
-                    .append(' ')
-                    .append(value)
-                    .append('\n');
+            ret.put('\t')
+                    .put(key)
+                    .put(' ');
+
+            for (int i=0; i < maxKeyLen - key.length(); i++)
+                ret.put(' ');
+
+            ret.put('=')
+                    .put(' ')
+                    .put(value)
+                    .put('\n');
         }
 
-        return ret.append('}')
-                .toString();
+        ret.put('}');
+        ret.position(0);
+        return ret.toString();
     }
 
 }

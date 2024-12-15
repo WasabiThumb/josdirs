@@ -16,7 +16,7 @@ public class WindowsOSDirsService implements OSDirsService {
 
     @Override
     public @NotNull OSDirs create(@NotNull Logger logger) {
-        return null;
+        return new WindowsOSDirs(logger);
     }
 
     @Override
