@@ -1,3 +1,21 @@
+/*
+
+   Copyright 2024 Wasabi Codes
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+
+*/
+
 use jni::JNIEnv;
 use jni::objects::{JObject, JString};
 use windows_sys::{
@@ -6,36 +24,6 @@ use windows_sys::{
     Win32::UI::Shell::*,
     Win32::System::Com::CoTaskMemFree
 };
-
-/*
-fn get_folder_path(id: u32) -> Option<String> {
-    let mut buf: Vec<u16> = vec![0u16; MAX_PATH as usize];
-    let buf_ptr = buf.as_mut_ptr();
-    let result: i32 = unsafe {
-        SHGetFolderPathW(
-            0usize as HWND,
-            id as i32,
-            0usize as HANDLE,
-            SHGFP_TYPE_CURRENT as u32,
-            buf_ptr
-        )
-    };
-    if result != S_OK {
-        return None;
-    }
-    let slice = unsafe {
-        let mut len: usize = 0;
-        for i in 0..MAX_PATH as usize {
-            if *buf_ptr.wrapping_add(i) == 0u16 {
-                len = i;
-                break;
-            }
-        }
-        std::slice::from_raw_parts(buf_ptr, len)
-    };
-    Some(String::from_utf16_lossy(slice))
-}
- */
 
 fn get_known_folder_path(id: GUID) -> Option<String> {
     let mut out: *mut u16 = std::ptr::null_mut();
