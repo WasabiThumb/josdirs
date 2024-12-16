@@ -23,7 +23,7 @@ public interface OSDirsService {
     OSDirs create(@NotNull Logger logger);
 
     /**
-     * Returns true if this service should be preferred over other available META-INF,
+     * Returns true if this service should be preferred over other available services,
      * based on compatibility with the current OS.
      */
     boolean isCompatible();

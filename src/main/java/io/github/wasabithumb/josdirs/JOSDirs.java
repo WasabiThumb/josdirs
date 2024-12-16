@@ -12,12 +12,13 @@ import java.util.logging.Logger;
  */
 public final class JOSDirs {
 
+    private static final Logger LOGGER = Logger.getLogger("jOSDirs");
     private static String PLATFORM_ID = null;
     private static OSDirs INSTANCE = null;
     private static boolean INIT = false;
 
     public static @NotNull Logger logger() {
-        return Logger.getLogger("jOSDirs");
+        return LOGGER;
     }
 
     /**
@@ -44,22 +45,21 @@ public final class JOSDirs {
 
     //
 
-    private static void complete(@NotNull OSDirsService service, @NotNull Logger logger) {
+    private static void complete(@NotNull OSDirsService service) {
         PLATFORM_ID = service.id();
-        INSTANCE = service.create(logger);
+        INSTANCE = service.create(LOGGER);
         INIT = true;
     }
 
     private static void reload() throws IllegalStateException {
-        final Logger logger = logger();
         final ServiceLoader<OSDirsService> loader = ServiceLoader.load(OSDirsService.class);
         final StringBuilder tried = new StringBuilder(21);
-        logger.log(Level.FINE, "Loading jOSDirs");
+        LOGGER.log(Level.FINE, "Loading jOSDirs");
 
         for (OSDirsService next : loader) {
-            logger.log(Level.FINE, "Checking service: " + next.id());
+            LOGGER.log(Level.FINE, "Checking service: " + next.id());
             if (next.isCompatible()) {
-                complete(next, logger);
+                complete(next);
                 return;
             }
             if (tried.length() > 0) tried.append(", ");
@@ -72,7 +72,7 @@ public final class JOSDirs {
         } else {
             errMsg = "No compatible OSDirs instance found (got: " + tried + ")";
         }
-        logger.log(Level.SEVERE, errMsg);
+        LOGGER.log(Level.SEVERE, errMsg);
         throw new IllegalStateException(errMsg);
     }
 
