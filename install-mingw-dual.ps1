@@ -33,7 +33,7 @@ function Invoke-Main {
 
     $ProgressPreference = 'Continue'
 
-    $dest = "$env:APPDATA\mingw-dual"
+    $dest = "$env:ProgramData\mingw-dual"
     Write-Output "Writing to $dest"
     md -Force $dest | Out-Null
     Move-Item -Path ".\*" -Destination "$dest"
