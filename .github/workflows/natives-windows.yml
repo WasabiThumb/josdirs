@@ -22,12 +22,14 @@ jobs:
       id: mingw-amd64
       with:
         platform: x64
+        static: 0
 
     - name: Set up MinGW (x86)
       uses: egor-tensin/setup-mingw@v2
       id: mingw-i686
       with:
         platform: x86
+        static: 0
         cc: 0
 
     - name: Set up Rust toolchain
