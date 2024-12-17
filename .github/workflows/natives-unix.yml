@@ -16,12 +16,14 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
-    - name: Install Rust
-      run: pacman --disable-sandbox --noconfirm -Sy rustup |
-        rustup default stable
-
     - name: Install GCC
       run: pacman --disable-sandbox --noconfirm -Sy gcc aarch64-linux-gnu-gcc
+
+    - name: Install Rustup
+      run: pacman --disable-sandbox --noconfirm -Sy rustup
+
+    - name: Install Rust Toolchain
+      run: rustup default stable
     
     - name: Set up JDK 21
       uses: actions/setup-java@v4
