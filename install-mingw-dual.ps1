@@ -19,23 +19,16 @@ function Add-PathEntry {
 function Invoke-Main {
     $ProgressPreference = 'SilentlyContinue'
 
-    Write-Output "Initializing 7-Zip Module..."
-    [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
-    Register-PackageSource -provider NuGet -name nugetRepository -location https://www.nuget.org/api/v2
-    Install-PackageProvider -Name NuGet -MinimumVersion 2.8.5.201 -Force -Scope CurrentUser
-    Set-PSRepository -Name 'PSGallery' -SourceLocation "https://www.powershellgallery.com/api/v2" -InstallationPolicy Trusted
-    Install-Module -Name 7Zip4PowerShell -Force -Scope CurrentUser
-
     Write-Output "Downloading mingw64..."
     Invoke-WebRequest "$Download64" -OutFile ".\amd64.7z"
     Write-Output "Extracting mingw64..."
-    Expand-7Zip -ArchiveFileName "amd64.7z" -TargetPath ".\"
+    ${env:ProgramFiles}\7-Zip\7z.exe x ".\amd64.7z" "-o.\" -y
     Remove-Item -Path ".\amd64.7z" -Force
 
     Write-Output "Downloading mingw32..."
     Invoke-WebRequest "$Download32" -OutFile ".\i686.7z"
     Write-Output "Extracting mingw32..."
-    Expand-7Zip -ArchiveFileName "i686.7z" -TargetPath ".\"
+    ${env:ProgramFiles}\7-Zip\7z.exe x ".\i686.7z" "-o.\" -y
     Remove-Item -Path ".\i686.7z" -Force
 
     $ProgressPreference = 'Continue'

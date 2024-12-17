@@ -17,6 +17,11 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
+    - name: Install 7-Zip
+      uses: crazy-max/ghaction-chocolatey@v3
+      with:
+        args: install 7zip --no-progress
+
     - name: Set up MinGW
       shell: pwsh
       run: |
