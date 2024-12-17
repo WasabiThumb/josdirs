@@ -57,10 +57,6 @@ allprojects {
         sourceCompatibility = javaVersion
         targetCompatibility = javaVersion
 
-        toolchain {
-            languageVersion.set(JavaLanguageVersion.of(targetJavaVersion))
-        }
-
         withSourcesJar()
         withJavadocJar()
     }
