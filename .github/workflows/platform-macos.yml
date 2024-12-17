@@ -1,4 +1,4 @@
-name: build natives (macos)
+name: build platform (macos)
 
 on:
   push:
