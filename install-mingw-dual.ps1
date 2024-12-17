@@ -14,6 +14,9 @@ function Add-PathEntry {
         "Path",
         [Environment]::GetEnvironmentVariable("Path", [EnvironmentVariableTarget]::Machine) + ";$To",
         [EnvironmentVariableTarget]::Machine)
+    if ($env:GITHUB_PATH) {
+        echo "$To" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+    }
 }
 
 function Invoke-Main {
