@@ -17,7 +17,7 @@ jobs:
     - uses: actions/checkout@v4
 
     - name: Install GCC
-      run: pacman --disable-sandbox --noconfirm -Sy gcc aarch64-linux-gnu-gcc
+      run: pacman --disable-sandbox --noconfirm -Sy gcc lib32-gcc-libs aarch64-linux-gnu-gcc
 
     - name: Install Rustup
       run: pacman --disable-sandbox --noconfirm -Sy rustup
