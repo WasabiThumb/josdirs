@@ -1,4 +1,4 @@
-# Installs mingw64 and mingw32 for the current user, and adds them to the PATH.
+# Installs mingw64 and mingw32 and adds them to the PATH.
 # Created with <3 by Wasabi
 
 # Update these links here: https://github.com/niXman/mingw-builds-binaries/releases/latest
@@ -12,8 +12,8 @@ function Add-PathEntry {
     $env:Path += ";$To"
     [Environment]::SetEnvironmentVariable(
         "Path",
-        [Environment]::GetEnvironmentVariable("Path", [EnvironmentVariableTarget]::User) + ";$To",
-        [EnvironmentVariableTarget]::User)
+        [Environment]::GetEnvironmentVariable("Path", [EnvironmentVariableTarget]::Machine) + ";$To",
+        [EnvironmentVariableTarget]::Machine)
 }
 
 function Invoke-Main {
@@ -37,6 +37,8 @@ function Invoke-Main {
     Write-Output "Writing to $dest"
     md -Force $dest | Out-Null
     Move-Item -Path ".\*" -Destination "$dest"
+
+    tree "$dest" /F
 
     Write-Output "Adding mingw64 to PATH..."
     Add-PathEntry -To "$dest\mingw64\bin"
