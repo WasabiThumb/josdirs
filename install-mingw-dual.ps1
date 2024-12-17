@@ -22,13 +22,13 @@ function Invoke-Main {
     Write-Output "Downloading mingw64..."
     Invoke-WebRequest "$Download64" -OutFile ".\amd64.7z"
     Write-Output "Extracting mingw64..."
-    ${env:ProgramFiles}\7-Zip\7z.exe x ".\amd64.7z" "-o.\" -y
+    & "${env:ProgramFiles}\7-Zip\7z.exe" x ".\amd64.7z" "-o.\" -y
     Remove-Item -Path ".\amd64.7z" -Force
 
     Write-Output "Downloading mingw32..."
     Invoke-WebRequest "$Download32" -OutFile ".\i686.7z"
     Write-Output "Extracting mingw32..."
-    ${env:ProgramFiles}\7-Zip\7z.exe x ".\i686.7z" "-o.\" -y
+    & "${env:ProgramFiles}\7-Zip\7z.exe" x ".\i686.7z" "-o.\" -y
     Remove-Item -Path ".\i686.7z" -Force
 
     $ProgressPreference = 'Continue'
