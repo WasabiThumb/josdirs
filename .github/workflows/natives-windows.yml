@@ -17,10 +17,15 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
-    - name: Set up MinGW
+    - name: Set up MinGW (x64)
       uses: crazy-max/ghaction-chocolatey@v3
       with:
-        args: install mingw
+        args: install mingw --no-progress
+
+    - name: Set up MinGW (x86)
+      uses: crazy-max/ghaction-chocolatey@v3
+      with:
+        args: install mingw --x86 --no-progress
 
     - name: Set up Rust toolchain
       uses: actions-rust-lang/setup-rust-toolchain@v1
