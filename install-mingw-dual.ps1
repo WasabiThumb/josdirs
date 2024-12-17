@@ -21,11 +21,7 @@ function Invoke-Main {
 
     Write-Output "Initializing 7-Zip Module..."
     [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
-    $_nugetUrl = "https://api.nuget.org/v3/index.json"
-    $packageSources = Get-PackageSource
-    if(@($packageSources).Where{$_.location -eq $_nugetUrl}.count -eq 0) {
-       Register-PackageSource -Name MyNuGet -Location $_nugetUrl -ProviderName NuGet
-    }
+    Register-PackageSource -provider NuGet -name nugetRepository -location https://www.nuget.org/api/v2
     Install-PackageProvider -Name NuGet -MinimumVersion 2.8.5.201 -Force -Scope CurrentUser
     Set-PSRepository -Name 'PSGallery' -SourceLocation "https://www.powershellgallery.com/api/v2" -InstallationPolicy Trusted
     Install-Module -Name 7Zip4PowerShell -Force -Scope CurrentUser
